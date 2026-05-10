@@ -2,13 +2,14 @@ import os
 import re
 import requests
 from datetime import datetime, timezone, timedelta
-from supabase import create_client
+from supabase import create_client, ClientOptions
 
 # ────────────────────────────────────────────
 # 환경변수
 # ────────────────────────────────────────────
 SUPABASE_URL     = os.environ["SUPABASE_URL"]
 SUPABASE_KEY     = os.environ["SUPABASE_KEY"]
+ADMIN_TOKEN      = os.environ["ADMIN_TOKEN"]
 TELEGRAM_TOKEN   = os.environ["TELEGRAM_TOKEN_DOLLAR"]
 TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID_DOLLAR"]
 
@@ -17,7 +18,11 @@ CONFIG_ID = "config"
 # 카카오뱅크 달러박스 보정값
 KAKAO_OFFSET = 1.4
 
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+supabase = create_client(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    options=ClientOptions(headers={"x-mac-secret": ADMIN_TOKEN})
+)
 
 
 # ────────────────────────────────────────────
